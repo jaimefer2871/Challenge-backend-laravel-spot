@@ -30,12 +30,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 'uses' => 'UrlShortenerController@show'
             ]);
 
-            $router->patch('/{id}', [
-                'as' => 'urlshortener-update',
-                'uses' => 'UrlShortenerController@update'
+            $router->post('/', [
+                'as' => 'urlshortener-create',
+                'uses' => 'UrlShortenerController@create'
             ]);
 
-            $router->delete('/{id}}', [
+            $router->delete('/{id}', [
                 'as' => 'urlshortener-delete',
                 'uses' => 'UrlShortenerController@delete'
             ]);
