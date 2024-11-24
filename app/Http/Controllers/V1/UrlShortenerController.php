@@ -8,6 +8,9 @@ use App\Services\UrlShortenerService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @OA\Info(title="API UrlShortener", version="1.0")
+ */
 class UrlShortenerController extends Controller
 {
     protected UrlShortenerService $service;
@@ -17,6 +20,19 @@ class UrlShortenerController extends Controller
         $this->service = $urlShortenerService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/urlshortener/",
+     *     summary="List all url's",
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *     @OA\JsonContent(
+     *             @OA\Examples(example="200",value={"error":false,"code":200,"message":"OK","data":{{"id":3,"original":"https:\/\/www.aaa.com\/watch?v=1","shortened":"2dcd90df","created_at":"2024-11-23T15:56:43.000000Z","updated_at":"2024-11-23T15:56:43.000000Z"}}}, summary="An result object."),
+     *         )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $output = [
@@ -37,7 +53,26 @@ class UrlShortenerController extends Controller
 
         return response()->json($output, $output['code']);
     }
-
+    /**
+     * @OA\Get(
+     *     path="/api/v1/urlshortener/{id}",
+     *     summary="show info url by id",
+     *     @OA\Parameter(
+     *         description="Parameters",
+     *         in="path",
+     *         name="id",
+     *         @OA\Schema(type="int"),
+     *         @OA\Examples(example="int", value="6", summary="int value"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *     @OA\JsonContent(
+     *             @OA\Examples(example="200",value={"error":false,"code":200,"message":"OK","data":{"id":3,"original":"https:\/\/www.aaa.com\/watch?v=1","shortened":"2dcd90df","created_at":"2024-11-23T15:56:43.000000Z","updated_at":"2024-11-23T15:56:43.000000Z"}}, summary="successful"),
+     *         )
+     *     )
+     * )
+     */
     public function show(Request $request, $id)
     {
         $output = [
@@ -59,11 +94,36 @@ class UrlShortenerController extends Controller
         return response()->json($output, $output['code']);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/urlshortener/",
+     *     summary="Save url shortener",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="original",
+     *                     type="string"
+     *                 ),
+     *                 example={"original": "https://laravel.com/docs/11.x/validation#rule-url"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="OK",
+     *     @OA\JsonContent(
+     *             @OA\Examples(example="200",value={"error":false,"code":201,"message":"OK","data":{"url":"https:\/\/laravel.com\/docs\/11.x\/validation#rule-url","shortened":"19a80c29"}}, summary="201 succesfull"),
+     *         )
+     *     )
+     * )
+     */
     public function create(Request $request)
     {
         $output = [
             'error' => false,
-            'code'  => 200,
+            'code'  => 201,
             'message' => 'OK',
             'data' => []
         ];
@@ -99,7 +159,26 @@ class UrlShortenerController extends Controller
 
         return response()->json($output, $output['code']);
     }
-
+    /**
+     * @OA\Delete(
+     *   path="/api/v1/urlshortener/{id}",
+     *   summary="Delete url by id",
+     *   @OA\Parameter(
+     *     description="Parameters",
+     *     in="path",
+     *     name="id",
+     *     @OA\Schema(type="int"),
+     *     @OA\Examples(example="int", value="6", summary="int value"),
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *      description="OK",
+     *      @OA\JsonContent(
+     *          @OA\Examples(example="200",value={"error":false,"code":200,"message":"OK","data":{"wasDeleted":1}}, summary="successful"),
+     *      )
+     *   ),
+     * )
+     */
     public function delete(Request $request, $id)
     {
         $output = [
