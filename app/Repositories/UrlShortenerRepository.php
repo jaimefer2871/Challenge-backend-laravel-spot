@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\UrlShortenerModel;
+use Illuminate\Database\QueryException;
 
 class UrlShortenerRepository
 {
@@ -29,10 +30,17 @@ class UrlShortenerRepository
     public function save(array $data)
     {
         $output = false;
-        $model = new UrlShortenerModel($data);
 
-        if ($model->save()) {
-            $output = $model->toArray();
+        try {
+            $model = new UrlShortenerModel($data);
+
+            if ($model->save()) {
+                $output = $model->toArray();
+            }
+        } catch (QueryException $qe) {
+            $output = false;
+        } catch (\Exception $e) {
+            $output = false;
         }
 
         return $output;
