@@ -12,10 +12,6 @@
             "dest": "public/$1/$2"
         },
         {
-            "src": "/swagger/(.*)",
-            "dest": "/public/swagger/$1"
-        },
-        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
