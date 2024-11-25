@@ -23,7 +23,7 @@ $router->group(['prefix' => 'v1', 'namespace' => 'V1'], function () use ($router
             'as' => 'urlshortener-index',
             'uses' => 'UrlShortenerController@index'
         ]);
-
+        //test
         $router->get('/{id}', [
             'as' => 'urlshortener-show',
             'uses' => 'UrlShortenerController@show'
