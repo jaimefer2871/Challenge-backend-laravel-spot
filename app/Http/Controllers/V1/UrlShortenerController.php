@@ -46,7 +46,7 @@ class UrlShortenerController extends Controller
             $output['data'] = $this->service->getList();
         } catch (\Exception $e) {
             $output['error'] = true;
-            $output['code'] = $e->getCode();
+            $output['code'] = 500;
             $output['message'] = $e->getMessage();
             $output['errors'] = $e->getTraceAsString();
         }
