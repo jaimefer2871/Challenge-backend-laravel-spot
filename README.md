@@ -1,26 +1,79 @@
-# Lumen PHP Framework
+# Backend Laravel Lumen Framework - URLShorter
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/lumen)](https://packagist.org/packages/laravel/lumen-framework)
+Este proyecto se encuentra desarrollo en Laravel Lumen, un microframework de Laravel que contiene solo los paquetes necesarios para la construccion de API.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Requerimientos
 
-> **Note:** In the years since releasing Lumen, PHP has made a variety of wonderful performance improvements. For this reason, along with the availability of [Laravel Octane](https://laravel.com/docs/octane), we no longer recommend that you begin new projects with Lumen. Instead, we recommend always beginning new projects with [Laravel](https://laravel.com).
+-   PHP8.1 o mayor
+-   OpenSSL PHP
+-   PDO PHP Extension
+-   Mbstring PHP Extension
 
-## Official Documentation
+## Instalación
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+Luego de clonar el proyecto, se deben ejecutar los siguientes pasos:
 
-## Contributing
+-   php composer.phar install
+-   Configurar el archivo .env con las variables de entornos requeridas (pueden tomar de ejemplo el archivo .env.example)
+-   Generar el APP_KEY. Ejecutar: `php artisan key:generate` y colocar el valor en la variable mencionada.
+-   php artisan swagger-lume:generate (_Para generacion de documentación mediante Swagger_)
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Ejecución (Local)
 
-## Security Vulnerabilities
+Desde la raiz del proyecto, ejecutar: **php -S localhost:8000 public/index.php**
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## Ejecución (Produccion)
 
-## License
+Para efectos de esta prueba, se desplegara la API medainte apache en un ambiente
+Linux de la siguiente manera:
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Crear un punto de conexion en la carpeta `/etc/apache/sites-availables/`
+
+Ej: `001-api-backend.conf`
+
+```
+
+ServerName localhost
+<VirtualHost _default_:7000>
+        ServerAdmin xxx@xx.net
+        ServerAlias url.domain.com
+        DocumentRoot /var/www/Challenge-backend-laravel-spot/public/
+
+        <Directory  />
+                Options FollowSymLinks
+                AllowOverride all
+                Require all granted
+        </Directory>
+
+    <Directory /var/www/Challenge-backend-laravel-spot >
+            Options Indexes FollowSymLinks MultiViews ExecCGI
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+            Require all granted
+    </Directory>
+
+        ErrorLog /var/www/Challenge-backend-laravel-spot/error.log
+        LogLevel error
+        CustomLog /var/www/Challenge-backend-laravel-spot/access.log combined
+</VirtualHost>
+
+```
+
+**\*Nota**: Para este caso concreto, se uso el puerto 7000\*
+
+2. Luego se activa mediante el comando: `sudo a2ensite 001-api-backend.conf`
+
+3. Por ultimo, se recarga la configuracion del apache mediante el comando:
+   `sudo systemctl reload apache2`
+
+Al completar los pasos anteriores, accedemos a la api desde el dominio que
+tengamos configurado mediante la url:
+
+`http://my-domain.com:7000`
+
+## Acceso documentacion Swagger
+
+Para acceder a la documentacion, basta con ingresar a la ruta (Ya con el proyecto previamente levantado):
+
+`http://my-domain.com/api/documentation`
