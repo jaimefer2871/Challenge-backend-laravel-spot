@@ -95,6 +95,53 @@ class UrlShortenerController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/urlshortener/url/{code}",
+     *     summary="get url by code",
+     *     @OA\Parameter(
+     *         description="Parameters",
+     *         in="path",
+     *         name="code",
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="string", value="ae123", summary="string value"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *     @OA\JsonContent(
+     *             @OA\Examples(example="200",value={"error":false,"code":200,"message":"OK","data":{"original":"https:\/\/www.aaa.com\/watch?v=1"}, summary="successful"),
+     *         )
+     *     )
+     * )
+     */
+    public function getUrlByCode(Request $request, $code)
+    {
+        $output = [
+            'error' => false,
+            'code'  => 200,
+            'message' => 'OK',
+            'data' => [
+                'original' => null
+            ]
+        ];
+
+        try {
+            $result = $this->service->getByCode($code);
+
+            if (!empty($result)) {
+                $output['data']['original'] = $result->original;
+            }
+        } catch (\Exception $e) {
+            $output['error'] = true;
+            $output['code'] = 500;
+            $output['message'] = $e->getMessage();
+            $output['errors'] = $e->getTraceAsString();
+        }
+
+        return response()->json($output, $output['code']);
+    }
+
+    /**
      * @OA\Post(
      *     path="/api/v1/urlshortener/",
      *     summary="Save url shortener",

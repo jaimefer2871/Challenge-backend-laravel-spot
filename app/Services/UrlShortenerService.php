@@ -23,6 +23,11 @@ class UrlShortenerService
         return $this->repository->findById($id);
     }
 
+    public function getByCode($code)
+    {
+        return $this->repository->findByCode($code);
+    }
+
     public function create(array $data)
     {
         $data['shortened'] = bin2hex(random_bytes(4));

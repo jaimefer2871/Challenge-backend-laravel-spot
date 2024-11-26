@@ -13,6 +13,11 @@ class UrlShortenerRepository
         return UrlShortenerModel::find($id);
     }
 
+    public function findByCode(string $code)
+    {
+        return UrlShortenerModel::where('shortened',$code)->first();
+    }
+
     public function update(int $id, array $data)
     {
         $model = UrlShortenerModel::find($id);

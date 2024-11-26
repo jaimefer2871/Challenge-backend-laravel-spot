@@ -30,6 +30,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 'uses' => 'UrlShortenerController@show'
             ]);
 
+            $router->get('/url/{code}', [
+                'as' => 'urlshortener-code',
+                'uses' => 'UrlShortenerController@getUrlByCode'
+            ]);
+
             $router->post('/', [
                 'as' => 'urlshortener-create',
                 'uses' => 'UrlShortenerController@create'
